@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<project name="ganapathi" default="compile" basedir=".">
+<!-- this is for compare -->
+<property name="src.dir" value="src"/>
+<property name="build.dir" value="build"/>
+<property name="build.classes" value="${build.dir}/classes"/>
+<property name="build.lib" value="${build.dir}/lib"/>
+
+<target name="prepare">
+	<tstamp>
+		<format property="now" pattern="MMddyyyy"/>
+	</tstamp>
+	<mkdir dir="${build.dir}"/>
+	<mkdir dir="${build.classes}"/>
+	<mkdir dir="${build.lib}"/>
+	<mkdir dir="./target"/>
+	<echo message="Prepare a directory in time is REL_PMS_${now}" />
+</target>
+
+<target name="clean" description="clean all the files.">
+	<delete dir="${build.dir}"/>
+</target>
+
+<target name="compile" depends="prepare" description="compile all source files.">
+	<javac srcdir="${src.dir}" destdir="${build.classes}"/>
+</target>
+
+<target name="jar" depends="compile" description="clean, compile the build the jar file.">
+	<jar jarfile="./target/myproj.jar" basedir="${build.classes}" excludes="**/*Test.class"/>
+</target>
+
+<target name="javadoc" depends="jar">
+	<mkdir dir="${build.dir}/api"/>
+	<javadoc packagenames="com.*"
+	sourcepath="src"
+	destdir="${build.dir}/api"
+	author="true"
+	version="true"
+	use="true" >
+	</javadoc>
+</target>
+<target name="all" depends="javadoc" description="clean and build the jar files"/>
+</project>
+1260
